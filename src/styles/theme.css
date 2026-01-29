@@ -1,0 +1,26 @@
+@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap");
+
+:root {
+  /* Cores principais do tema da Suh */
+  --color-primary: #5bc5f2 ;
+  --color-primary-200: #54add3 ;
+  --color-primary-300: hsl(26, 100%, 95%);
+  --color-secondary: #181b24;
+  --color-secondary-200: #242938;
+  --color-secondary-300: #f1e7f3;
+  --color-tertiary: #4d5358;
+  --color-tertiary-200: #b0b0b0;
+  --color-tertiary-300: #e4e4e4;
+
+  --color-background-footer: #e5e9eb;
+  --color-background: #ffffff;
+
+  --color-white: #ffffff;
+  --color-black: #000000;
+  --color-blue: rgb(25 103 210 / 99%);
+  --color-gray-100: #f5f5f5;
+
+  --fontFamily-nunito: "Nunito", sans-serif;
+
+  /*  */
+}

@@ -1,0 +1,93 @@
+.header {
+  width: 100%;
+  background: var(--color-background);
+  border-bottom: 0.1rem solid var(--color-primary-300);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.inner {
+  max-width: 120rem;
+  margin: 0 auto;
+  padding: 1.5rem 1.5rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo img {
+  height: 5.5rem;
+  display: block;
+}
+
+.logovilla img {
+  height: 4.5rem;
+  display: block;
+}
+
+/* Nav desktop */
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 4rem;
+}
+
+.nav a {
+  text-decoration: none;
+  color: #444;
+  font-size: 1.6rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  transition: color 0.2s ease, transform 0.1s ease;
+}
+
+.nav a:hover {
+  color: #ff7a00; /* puxa pro laranja do logo */
+  transform: translateY(-1px);
+}
+
+/* Botão hambúrguer (mobile) */
+.menuToggle {
+  display: none;
+  font-size: 1.7rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* --------- RESPONSIVO --------- */
+@media (max-width: 768px) {
+  .inner {
+    padding: 0.8rem 1rem;
+  }
+
+  .menuToggle {
+    display: block;
+  }
+
+  .nav {
+    display: none;
+    position: absolute;
+    top: 60px;
+    right: 0;
+    left: 0;
+    flex-direction: column;
+    align-items: center;
+    background: #fff;
+    border-top: 1px solid #eee;
+    padding: 1rem 0;
+    gap: 0;
+  }
+
+  .nav.open {
+    display: flex;
+  }
+
+  .nav a {
+    width: 100%;
+    padding: 0.8rem 0;
+    text-align: center;
+  }
+}

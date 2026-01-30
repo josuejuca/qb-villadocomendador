@@ -1,5 +1,5 @@
 import styles from "./styles.module.css";
-import img from "../../assets/img/hero.webp";
+import img from "../../assets/img/photos/02.webp";
 
 export function InfoVilla() {
   return (

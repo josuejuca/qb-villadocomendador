@@ -1,0 +1,145 @@
+.sectionGallery {
+  width: 100%;
+  background: #f3f0ea;
+  padding: 70px 20px;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ===== Header (título + botão) ===== */
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 26px;
+}
+
+.headerLeft {
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  margin: 0;
+  font-family: ui-serif, Georgia, "Times New Roman", Times, serif;
+  font-weight: 600;
+  font-size: clamp(34px, 3.2vw, 56px);
+  line-height: 1.05;
+  color: #111;
+}
+
+.subtitle {
+  margin: 10px 0 0;
+  color: #666;
+  font-size: 16px;
+}
+
+.line {
+  width: 96px;
+  height: 4px;
+  background: #5bc5f2 ;
+  margin-top: 22px;
+  border-radius: 99px;
+}
+
+/* ===== Intro + FAQ ===== */
+
+.intro {
+  margin: 0 0 22px;
+  color: #333;
+  font-size: 16px;
+  line-height: 1.65;
+}
+
+.link {
+  color: #0b6ea6;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.link:hover {
+  opacity: 0.9;
+}
+
+.faq {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.item {
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(17, 17, 17, 0.05);
+}
+
+.question {
+  list-style: none;
+  cursor: pointer;
+  padding: 16px 18px;
+  font-weight: 700;
+  color: #111;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+/* remove o marcador padrão do summary */
+.question::-webkit-details-marker {
+  display: none;
+}
+
+.question::after {
+  content: "+";
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  background: rgba(91, 197, 242, 0.18);
+  color: #0b6ea6;
+  font-size: 20px;
+  flex: 0 0 auto;
+}
+
+.item[open] .question::after {
+  content: "–";
+}
+
+.answer {
+  padding: 0 18px 18px;
+  color: #333;
+  line-height: 1.65;
+}
+
+.answer p {
+  margin: 10px 0 0;
+}
+
+.answer p:first-child {
+  margin-top: 0;
+}
+
+.list {
+  margin: 10px 0 0;
+  padding-left: 18px;
+}
+
+.list li {
+  margin: 8px 0;
+}
+
+@media (max-width: 760px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

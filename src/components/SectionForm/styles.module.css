@@ -1,8 +1,17 @@
 .sectionForm {
   position: relative;
   width: 100%;
-  padding: 100px 20px;
+  min-height: 80vh;
+  min-height: 80svh;
+  height: 80vh;
+  height: 80svh;
+  padding: clamp(24px, 4vh, 72px) 20px;
   overflow: hidden;
+  display: flex;
+  align-items: center;
+
+  --video-scale: 1.08;
+  --ui-scale: 1;
 }
 
 /* ===== Video ===== */
@@ -22,7 +31,8 @@
   height: 100vh;
   min-width: 100vw;
   min-height: 56.25vw;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%) scale(var(--video-scale));
+  transform-origin: center;
 }
 
 /* Overlay mais elegante (escuro leve) */
@@ -45,11 +55,16 @@
   z-index: 2;
   max-width: 1200px;
   margin: 0 auto;
+  width: 100%;
 
   display: grid;
   grid-template-columns: 1.1fr 0.9fr;
-  gap: 60px;
+  gap: clamp(24px, 4vw, 60px);
   align-items: center;
+
+  transform: scale(var(--ui-scale));
+  transform-origin: center;
+  will-change: transform;
 }
 
 /* ===== Texto ===== */
@@ -142,6 +157,15 @@
 /* ===== Responsivo ===== */
 
 @media (max-width: 900px) {
+
+  .sectionForm {
+    height: auto;
+    --video-scale: 1.2;
+    --ui-scale: 1;
+    padding: 56px 16px;
+    align-items: stretch;
+  }
+
   .container {
     grid-template-columns: 1fr;
     gap: 50px;
@@ -156,5 +180,65 @@
 
   .formWrapper {
     justify-content: center;
+  }
+}
+
+@media (max-width: 600px) {
+  .sectionForm {
+    height: auto;
+    --video-scale: 1.35;
+    --ui-scale: 1;
+    padding: 48px 14px;
+    align-items: stretch;
+  }
+
+  .container {
+    gap: 32px;
+  }
+
+  .title {
+    font-size: clamp(28px, 7vw, 44px);
+  }
+
+  .description {
+    font-size: 16px;
+  }
+
+  .formPlaceholder {
+    padding: 22px;
+    min-height: 340px;
+  }
+}
+
+@media (max-aspect-ratio: 4/3) {
+  .sectionForm {
+    --video-scale: 1.45;
+  }
+}
+
+@media (max-height: 820px) {
+  .sectionForm {
+    height: auto;
+    padding: 24px 16px;
+    --ui-scale: 1;
+  }
+
+  .line {
+    margin: 16px 0;
+  }
+}
+
+@media (max-height: 720px) {
+  .sectionForm {
+    height: auto;
+    --ui-scale: 1;
+  }
+
+  .description {
+    margin-bottom: 16px;
+  }
+
+  .list li {
+    margin-bottom: 10px;
   }
 }

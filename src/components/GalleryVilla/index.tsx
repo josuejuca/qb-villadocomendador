@@ -1,7 +1,16 @@
 import { useEffect, useMemo, useState } from "react";
 import styles from "./styles.module.css";
 
-import img from "../../assets/img/hero.webp";
+import img from "../../assets/img/photos/01.webp";
+import img2 from "../../assets/img/photos/02.webp";
+import img3 from "../../assets/img/photos/03.webp";
+import img4 from "../../assets/img/photos/04.webp";
+import img5 from "../../assets/img/photos/05.webp";
+import img6 from "../../assets/img/photos/06.webp";
+import img7 from "../../assets/img/photos/07.webp";
+import img8 from "../../assets/img/photos/08.webp";
+// import img9 from "../../assets/img/photos/09.webp";
+// import img10 from "../../assets/img/photos/10.webp";
 
 type GalleryItem = {
   src: string;
@@ -13,13 +22,13 @@ export function GalleryVilla() {
   const images: GalleryItem[] = useMemo(
     () => [
       { src: img, alt: "Área da piscina" },
-      { src: img, alt: "Piscina e natureza" },
-      { src: img, alt: "Espaço de descanso" },
-      { src: img, alt: "Vista aérea da piscina" },
-      { src: img, alt: "Jardins e palmeiras" },
-      { src: img, alt: "Área externa" },
-      { src: img, alt: "Ambiente interno" },
-      { src: img, alt: "Natureza ao redor" },
+      { src: img2, alt: "Piscina e natureza" },
+      { src: img3, alt: "Espaço de descanso" },
+      { src: img4, alt: "Vista aérea da piscina" },
+      { src: img5, alt: "Jardins e palmeiras" },
+      { src: img6, alt: "Área externa" },
+      { src: img7, alt: "Ambiente interno" },
+      { src: img8, alt: "Natureza ao redor" },
     ],
     []
   );

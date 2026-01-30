@@ -4,6 +4,7 @@ import { Header } from './components/Header';
 import { SectionForm } from './components/SectionForm';
 import { InfoVilla } from './components/InfoVIlla';
 import { GalleryVilla } from './components/GalleryVilla';
+import { Regulamento } from './components/Regulamento';
 
 function App() {
 
@@ -11,9 +12,9 @@ function App() {
     <>
       <Header />
       <SectionForm />
-      {/* <SectionInfo /> */}
       <InfoVilla />
       <GalleryVilla />
+      <Regulamento />
     </>
   )
 }

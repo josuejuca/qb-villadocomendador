@@ -1,3 +1,4 @@
+import { FormVillaNPS } from "./FormVillaNPS";
 import styles from "./styles.module.css";
 
 export function SectionForm() {
@@ -29,7 +30,7 @@ export function SectionForm() {
 
           <div className={styles.line} />
 
-          <p className={styles.description}>
+          {/* <p className={styles.description}>
             Um refúgio de charme em meio à natureza — perfeito para
             desacelerar, curtir a dois e viver dias inesquecíveis.
           </p>
@@ -39,7 +40,7 @@ export function SectionForm() {
             <li>Exclusivo para clientes compradores da Quadraimob</li>
             <li>Responder à pesquisa leva apenas alguns minutos</li>
             <li>Uso da diária por até 3 meses após o sorteio</li>
-          </ul>
+          </ul> */}
 
           <p className={styles.footerText}>
             Sorteio válido para clientes compradores de qualquer imóvel com
@@ -51,7 +52,7 @@ export function SectionForm() {
         {/* Coluna direita (form) */}
         <div className={styles.formWrapper}>
           <div className={styles.formPlaceholder}>
-            {/* FORM VAI AQUI */}
+            <FormVillaNPS />
           </div>
         </div>
       </div>

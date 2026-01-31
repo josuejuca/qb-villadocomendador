@@ -82,7 +82,7 @@ export function GalleryVilla() {
 
           <a
             className={styles.button}
-            href="https://villadocomendador.com.br/"
+            href="https://villadocomendador.com.br/galeria-de-fotos/"
             target="_blank"
             rel="noopener noreferrer"
           >

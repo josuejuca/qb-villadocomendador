@@ -1,5 +1,8 @@
 // FormVillaNPS/index.tsx
 import React, { useMemo, useState } from "react";
+import axios from "axios";
+import notifier from "notifier-js";
+import "notifier-js/dist/css/notifier.css";
 import styles from "./styles.module.css";
 
 type Satisfacao =
@@ -7,8 +10,10 @@ type Satisfacao =
   | "Insatisfeito"
   | "Indiferente"
   | "Satisfeito"
-  | "Muito satisfeito";
-
+  | "Muito satisfeito"
+  | "Não fui atendido por gerente"
+  | "Não fui atendido por corretor";
+  
 type Step = 1 | 2 | 3 | 4 | 5;
 
 type FormData = {
@@ -25,13 +30,25 @@ type FormData = {
   justificativa: string;
 };
 
-const SATISFACAO_OPCOES: Satisfacao[] = [
+const SATISFACAO_BASE: Satisfacao[] = [
   "Muito insatisfeito",
   "Insatisfeito",
   "Indiferente",
   "Satisfeito",
   "Muito satisfeito",
 ];
+
+const SATISFACAO_OPCOES_CORRETOR: Satisfacao[] = [
+  ...SATISFACAO_BASE,
+  "Não fui atendido por corretor",
+];
+
+const SATISFACAO_OPCOES_GERENTE: Satisfacao[] = [
+  ...SATISFACAO_BASE,
+  "Não fui atendido por gerente",
+];
+
+const SATISFACAO_OPCOES_PROCESSO: Satisfacao[] = [...SATISFACAO_BASE];
 
 function validarEmail(email: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
@@ -53,6 +70,14 @@ function maskTelefoneBR(value: string) {
 
 function isTelefoneValido(telefone: string) {
   return telefone.replace(/\D/g, "").length === 11;
+}
+
+function notifySuccess(message: string) {
+  notifier.show("Sucesso", message, "", "", 4000);
+}
+
+function notifyError(message: string) {
+  notifier.show("Erro", message, "", "", 6000);
 }
 
 export function FormVillaNPS() {
@@ -175,12 +200,37 @@ export function FormVillaNPS() {
     if (Object.keys(errorsStep5).length > 0) return;
 
     setSubmitting(true);
-    try {   
-      // await fetch("/api/nps", { method: "POST", headers: { "Content-Type":"application/json" }, body: JSON.stringify(data) });
+    try {
+      const nps = data.nps;
+      if (nps === null) throw new Error("Selecione uma nota de 0 a 10.");
 
-      await new Promise((r) => setTimeout(r, 700));
+      const apiHost = import.meta.env.VITE_API_HOST as string | undefined;
+      if (!apiHost) {
+        throw new Error(
+          "API não configurada. Defina VITE_API_HOST no arquivo .env (ex: https://qb-villadocomendador-api.vercel.app)."
+        );
+      }
 
-      alert("Resposta enviada! Obrigado 🙂");
+      const url = new URL("/api/v1/nps", apiHost).toString();
+
+      const payload = {
+        nome: data.nome.trim(),
+        email: data.email.trim(),
+        telefone: data.telefone.trim(),
+        imovel_unidade: data.imovelUnidade.trim(),
+        avaliacao_processo_compra: data.processoCompra,
+        avaliacao_corretor: data.corretor,
+        avaliacao_gerente: data.gerente,
+        nps,
+        justificativa: data.justificativa.trim(),
+      };
+
+      await axios.post(url, payload, {
+        headers: { "Content-Type": "application/json" },
+        timeout: 15000,
+      });
+
+      notifySuccess("Resposta enviada! Obrigado.");
       setStep(1);
       setTouched({});
       setData({
@@ -194,6 +244,22 @@ export function FormVillaNPS() {
         nps: null,
         justificativa: "",
       });
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        const status = err.response?.status;
+        const apiMessage =
+          typeof err.response?.data === "string" ? err.response?.data : undefined;
+        notifyError(
+          apiMessage ||
+            (status
+              ? `Erro ao enviar resposta (HTTP ${status}).`
+              : "Erro ao enviar resposta.")
+        );
+        return;
+      }
+
+      const message = err instanceof Error ? err.message : "Erro ao enviar resposta.";
+      notifyError(message);
     } finally {
       setSubmitting(false);
     }
@@ -208,7 +274,7 @@ export function FormVillaNPS() {
         </div>
 
         <p className={styles.subheading}>
-          Leva poucos minutos. Sua resposta ajuda a Quadraimob a melhorar cada vez mais.
+          Leva poucos minutos. Sua resposta ajuda a quadraimob a melhorar cada vez mais.
         </p>
 
         <div className={styles.progress} aria-hidden="true">
@@ -302,7 +368,7 @@ export function FormVillaNPS() {
             </p>
 
             <div className={styles.choices}>
-              {SATISFACAO_OPCOES.map((opt) => (
+              {SATISFACAO_OPCOES_CORRETOR.map((opt) => (
                 <label key={`corretor-${opt}`} className={styles.choice}>
                   <input
                     type="radio"
@@ -334,7 +400,7 @@ export function FormVillaNPS() {
             </p>
 
             <div className={styles.choices}>
-              {SATISFACAO_OPCOES.map((opt) => (
+              {SATISFACAO_OPCOES_GERENTE.map((opt) => (
                 <label key={`gerente-${opt}`} className={styles.choice}>
                   <input
                     type="radio"
@@ -367,7 +433,7 @@ export function FormVillaNPS() {
             </p>
 
             <div className={styles.choices}>
-              {SATISFACAO_OPCOES.map((opt) => (
+              {SATISFACAO_OPCOES_PROCESSO.map((opt) => (
                 <label key={`processo-${opt}`} className={styles.choice}>
                   <input
                     type="radio"

@@ -5,8 +5,9 @@ import { Header } from './components/Header';
 import { SectionForm } from './components/SectionForm';
 import { InfoVilla } from './components/InfoVIlla';
 import { GalleryVilla } from './components/GalleryVilla';
-import { Regulamento } from './components/Regulamento';
+import { Faq } from './components/Faq';
 import { Loader } from './components/Loader';
+import { Footer } from './components/Footer';
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -43,7 +44,8 @@ function App() {
       <SectionForm />
       <InfoVilla />
       <GalleryVilla />
-      <Regulamento />
+      <Faq />
+      <Footer />
     </>
   )
 }

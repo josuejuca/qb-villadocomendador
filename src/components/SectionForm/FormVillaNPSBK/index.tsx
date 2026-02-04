@@ -1,5 +1,8 @@
 // FormVillaNPS/index.tsx
 import React, { useMemo, useState } from "react";
+import axios from "axios";
+import notifier from "notifier-js";
+import "notifier-js/dist/css/notifier.css";
 import styles from "./styles.module.css";
 
 type Satisfacao =
@@ -7,7 +10,11 @@ type Satisfacao =
   | "Insatisfeito"
   | "Indiferente"
   | "Satisfeito"
-  | "Muito satisfeito";
+  | "Muito satisfeito"
+  | "Não fui atendido por gerente"
+  | "Não fui atendido por corretor";
+  
+type Step = 1 | 2 | 3 | 4 | 5;
 
 type FormData = {
   nome: string;
@@ -21,15 +28,28 @@ type FormData = {
 
   nps: number | null;
   justificativa: string;
+  aceiteRegulamento: boolean;
 };
 
-const SATISFACAO_OPCOES: Satisfacao[] = [
+const SATISFACAO_BASE: Satisfacao[] = [
   "Muito insatisfeito",
   "Insatisfeito",
   "Indiferente",
   "Satisfeito",
   "Muito satisfeito",
 ];
+
+const SATISFACAO_OPCOES_CORRETOR: Satisfacao[] = [
+  ...SATISFACAO_BASE,
+  "Não fui atendido por corretor",
+];
+
+const SATISFACAO_OPCOES_GERENTE: Satisfacao[] = [
+  ...SATISFACAO_BASE,
+  "Não fui atendido por gerente",
+];
+
+const SATISFACAO_OPCOES_PROCESSO: Satisfacao[] = [...SATISFACAO_BASE];
 
 function validarEmail(email: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
@@ -50,12 +70,19 @@ function maskTelefoneBR(value: string) {
 }
 
 function isTelefoneValido(telefone: string) {
-  // Espera 11 dígitos (inclui 9º dígito)
   return telefone.replace(/\D/g, "").length === 11;
 }
 
+function notifySuccess(message: string) {
+  notifier.show("Sucesso", message, "", "", 4000);
+}
+
+function notifyError(message: string) {
+  notifier.show("Erro", message, "", "", 6000);
+}
+
 export function FormVillaNPS() {
-  const [step, setStep] = useState<1 | 2 | 3>(1);
+  const [step, setStep] = useState<Step>(1);
   const [submitting, setSubmitting] = useState(false);
 
   const [data, setData] = useState<FormData>({
@@ -70,15 +97,10 @@ export function FormVillaNPS() {
 
     nps: null,
     justificativa: "",
+    aceiteRegulamento: false,
   });
 
   const [touched, setTouched] = useState<Record<string, boolean>>({});
-
-  const progress = useMemo(() => {
-    if (step === 1) return 33;
-    if (step === 2) return 66;
-    return 100;
-  }, [step]);
 
   const setField = <K extends keyof FormData>(key: K, value: FormData[K]) => {
     setData((prev) => ({ ...prev, [key]: value }));
@@ -86,6 +108,17 @@ export function FormVillaNPS() {
 
   const markTouched = (key: keyof FormData) =>
     setTouched((prev) => ({ ...prev, [key]: true }));
+
+  const progress = useMemo(() => {
+    // 5 etapas reais
+    if (step === 1) return 20;
+    if (step === 2) return 40;
+    if (step === 3) return 60;
+    if (step === 4) return 80;
+    return 100;
+  }, [step]);
+
+  const stepLabel = useMemo(() => `Etapa ${step}/5`, [step]);
 
   const errorsStep1 = useMemo(() => {
     const e: Partial<Record<keyof FormData, string>> = {};
@@ -103,61 +136,105 @@ export function FormVillaNPS() {
   const errorsStep2 = useMemo(() => {
     const e: Partial<Record<keyof FormData, string>> = {};
     if (!data.corretor) e.corretor = "Selecione uma opção.";
-    if (!data.gerente) e.gerente = "Selecione uma opção.";
-    if (!data.processoCompra) e.processoCompra = "Selecione uma opção.";
     return e;
   }, [data]);
 
   const errorsStep3 = useMemo(() => {
     const e: Partial<Record<keyof FormData, string>> = {};
-    if (data.nps === null) e.nps = "Selecione uma nota de 0 a 10.";
+    if (!data.gerente) e.gerente = "Selecione uma opção.";
     return e;
   }, [data]);
 
-  const canGoNextStep1 = Object.keys(errorsStep1).length === 0;
-  const canGoNextStep2 = Object.keys(errorsStep2).length === 0;
-  const canSubmit = Object.keys(errorsStep3).length === 0;
+  const errorsStep4 = useMemo(() => {
+    const e: Partial<Record<keyof FormData, string>> = {};
+    if (!data.processoCompra) e.processoCompra = "Selecione uma opção.";
+    return e;
+  }, [data]);
+
+  const errorsStep5 = useMemo(() => {
+    const e: Partial<Record<keyof FormData, string>> = {};
+    if (data.nps === null) e.nps = "Selecione uma nota de 0 a 10.";
+    if (!data.aceiteRegulamento)
+      e.aceiteRegulamento = "Você precisa aceitar o regulamento da campanha.";
+    return e;
+  }, [data]);
 
   function next() {
     if (step === 1) {
-      // marca tudo do step 1 como touched pra exibir erro se faltar algo
       (["nome", "email", "telefone", "imovelUnidade"] as (keyof FormData)[]).forEach(
         markTouched
       );
-      if (!canGoNextStep1) return;
+      if (Object.keys(errorsStep1).length > 0) return;
       setStep(2);
       return;
     }
 
     if (step === 2) {
-      (["corretor", "gerente", "processoCompra"] as (keyof FormData)[]).forEach(
-        markTouched
-      );
-      if (!canGoNextStep2) return;
+      markTouched("corretor");
+      if (Object.keys(errorsStep2).length > 0) return;
       setStep(3);
+      return;
+    }
+
+    if (step === 3) {
+      markTouched("gerente");
+      if (Object.keys(errorsStep3).length > 0) return;
+      setStep(4);
+      return;
+    }
+
+    if (step === 4) {
+      markTouched("processoCompra");
+      if (Object.keys(errorsStep4).length > 0) return;
+      setStep(5);
+      return;
     }
   }
 
   function back() {
     if (step === 2) return setStep(1);
     if (step === 3) return setStep(2);
+    if (step === 4) return setStep(3);
+    if (step === 5) return setStep(4);
   }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     markTouched("nps");
-    if (!canSubmit) return;
+    if (Object.keys(errorsStep5).length > 0) return;
 
     setSubmitting(true);
     try {
-      // TODO: conecte no seu endpoint (exemplo):
-      // await fetch("/api/nps", { method: "POST", headers: { "Content-Type":"application/json" }, body: JSON.stringify(data) });
+      const nps = data.nps;
+      if (nps === null) throw new Error("Selecione uma nota de 0 a 10.");
 
-      // Simula envio
-      await new Promise((r) => setTimeout(r, 700));
+      const apiHost = import.meta.env.VITE_API_HOST as string | undefined;
+      if (!apiHost) {
+        throw new Error(
+          "API não configurada. Defina VITE_API_HOST no arquivo .env (ex: https://qb-villadocomendador-api.vercel.app)."
+        );
+      }
 
-      // Você pode trocar por um estado de "sucesso" e mostrar msg.
-      alert("Resposta enviada! Obrigado 🙂");
+      const url = new URL("/api/v1/nps", apiHost).toString();
+
+      const payload = {
+        nome: data.nome.trim(),
+        email: data.email.trim(),
+        telefone: data.telefone.trim(),
+        imovel_unidade: data.imovelUnidade.trim(),
+        avaliacao_processo_compra: data.processoCompra,
+        avaliacao_corretor: data.corretor,
+        avaliacao_gerente: data.gerente,
+        nps,
+        justificativa: data.justificativa.trim(),
+      };
+
+      await axios.post(url, payload, {
+        headers: { "Content-Type": "application/json" },
+        timeout: 15000,
+      });
+
+      notifySuccess("Resposta enviada! Obrigado.");
       setStep(1);
       setTouched({});
       setData({
@@ -170,7 +247,24 @@ export function FormVillaNPS() {
         processoCompra: "",
         nps: null,
         justificativa: "",
+        aceiteRegulamento: false,
       });
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        const status = err.response?.status;
+        const apiMessage =
+          typeof err.response?.data === "string" ? err.response?.data : undefined;
+        notifyError(
+          apiMessage ||
+            (status
+              ? `Erro ao enviar resposta (HTTP ${status}).`
+              : "Erro ao enviar resposta.")
+        );
+        return;
+      }
+
+      const message = err instanceof Error ? err.message : "Erro ao enviar resposta.";
+      notifyError(message);
     } finally {
       setSubmitting(false);
     }
@@ -181,11 +275,11 @@ export function FormVillaNPS() {
       <header className={styles.header}>
         <div className={styles.headerTop}>
           <h3 className={styles.heading}>Pesquisa de satisfação</h3>
-          <span className={styles.stepTag}>Etapa {step}/3</span>
+          <span className={styles.stepTag}>{stepLabel}</span>
         </div>
 
         <p className={styles.subheading}>
-          Leva poucos minutos. Sua resposta ajuda a Quadraimob a melhorar cada vez mais.
+          Leva poucos minutos. Sua resposta ajuda a quadraimob a melhorar cada vez mais.
         </p>
 
         <div className={styles.progress} aria-hidden="true">
@@ -205,7 +299,7 @@ export function FormVillaNPS() {
               value={data.nome}
               onChange={(ev) => setField("nome", ev.target.value)}
               onBlur={() => markTouched("nome")}
-              placeholder="Seu nome completo"
+              placeholder=""
               autoComplete="name"
             />
             {touched.nome && errorsStep1.nome && (
@@ -223,7 +317,7 @@ export function FormVillaNPS() {
                 value={data.email}
                 onChange={(ev) => setField("email", ev.target.value)}
                 onBlur={() => markTouched("email")}
-                placeholder="seuemail@exemplo.com"
+                placeholder=""
                 autoComplete="email"
                 inputMode="email"
               />
@@ -241,7 +335,7 @@ export function FormVillaNPS() {
                 value={data.telefone}
                 onChange={(ev) => setField("telefone", maskTelefoneBR(ev.target.value))}
                 onBlur={() => markTouched("telefone")}
-                placeholder="(61) 9XXXX-XXXX"
+                placeholder=""
                 inputMode="tel"
                 autoComplete="tel"
               />
@@ -261,7 +355,7 @@ export function FormVillaNPS() {
               value={data.imovelUnidade}
               onChange={(ev) => setField("imovelUnidade", ev.target.value)}
               onBlur={() => markTouched("imovelUnidade")}
-              placeholder="Ex.: Residencial X — Bloco A, Apto 1204"
+              placeholder=""
             />
             {touched.imovelUnidade && errorsStep1.imovelUnidade && (
               <p className={styles.error}>{errorsStep1.imovelUnidade}</p>
@@ -275,11 +369,11 @@ export function FormVillaNPS() {
         <section className={styles.section}>
           <div className={styles.question}>
             <p className={styles.qTitle}>
-              Como você avalia o atendimento do corretor (conhecimento, clareza nas
-              informações, tratamento e agilidade)? <span className={styles.req}>*</span>
+              Como você avalia o atendimento do corretor (conhecimento, clareza nas informações, tratamento e agilidade)? <span className={styles.req}>*</span>
             </p>
+
             <div className={styles.choices}>
-              {SATISFACAO_OPCOES.map((opt) => (
+              {SATISFACAO_OPCOES_CORRETOR.map((opt) => (
                 <label key={`corretor-${opt}`} className={styles.choice}>
                   <input
                     type="radio"
@@ -293,19 +387,25 @@ export function FormVillaNPS() {
                 </label>
               ))}
             </div>
+
             {touched.corretor && errorsStep2.corretor && (
               <p className={styles.error}>{errorsStep2.corretor}</p>
             )}
           </div>
+        </section>
+      )}
 
+      {/* STEP 3 */}
+      {step === 3 && (
+        <section className={styles.section}>
           <div className={styles.question}>
             <p className={styles.qTitle}>
-              Você foi atendido por algum de nossos gerentes? Se sim, como foi esse
-              atendimento (conhecimento, clareza nas informações, tratamento e agilidade)?{" "}
+              Você foi atendido por algum de nossos gerentes? Se sim, como foi esse atendimento (conhecimento, clareza nas informações, tratamento e agilidade)?{" "}
               <span className={styles.req}>*</span>
             </p>
+
             <div className={styles.choices}>
-              {SATISFACAO_OPCOES.map((opt) => (
+              {SATISFACAO_OPCOES_GERENTE.map((opt) => (
                 <label key={`gerente-${opt}`} className={styles.choice}>
                   <input
                     type="radio"
@@ -319,19 +419,26 @@ export function FormVillaNPS() {
                 </label>
               ))}
             </div>
-            {touched.gerente && errorsStep2.gerente && (
-              <p className={styles.error}>{errorsStep2.gerente}</p>
+
+            {touched.gerente && errorsStep3.gerente && (
+              <p className={styles.error}>{errorsStep3.gerente}</p>
             )}
           </div>
+        </section>
+      )}
 
+      {/* STEP 4 */}
+      {step === 4 && (
+        <section className={styles.section}>
           <div className={styles.question}>
             <p className={styles.qTitle}>
               Como você avalia o processo de <strong>COMPRA</strong> do seu imóvel em
               relação às responsabilidades da imobiliária quadraimob (confecção de
               contrato e esclarecimento de dúvidas)? <span className={styles.req}>*</span>
             </p>
+
             <div className={styles.choices}>
-              {SATISFACAO_OPCOES.map((opt) => (
+              {SATISFACAO_OPCOES_PROCESSO.map((opt) => (
                 <label key={`processo-${opt}`} className={styles.choice}>
                   <input
                     type="radio"
@@ -345,15 +452,16 @@ export function FormVillaNPS() {
                 </label>
               ))}
             </div>
-            {touched.processoCompra && errorsStep2.processoCompra && (
-              <p className={styles.error}>{errorsStep2.processoCompra}</p>
+
+            {touched.processoCompra && errorsStep4.processoCompra && (
+              <p className={styles.error}>{errorsStep4.processoCompra}</p>
             )}
           </div>
         </section>
       )}
 
-      {/* STEP 3 */}
-      {step === 3 && (
+      {/* STEP 5 */}
+      {step === 5 && (
         <section className={styles.section}>
           <div className={styles.question}>
             <p className={styles.qTitle}>
@@ -383,7 +491,9 @@ export function FormVillaNPS() {
               <span>10 = muito provável</span>
             </div>
 
-            {touched.nps && errorsStep3.nps && <p className={styles.error}>{errorsStep3.nps}</p>}
+            {touched.nps && errorsStep5.nps && (
+              <p className={styles.error}>{errorsStep5.nps}</p>
+            )}
           </div>
 
           <div className={styles.field}>
@@ -395,6 +505,28 @@ export function FormVillaNPS() {
               placeholder="Se quiser, conte rapidamente o motivo da sua nota."
               rows={4}
             />
+          </div>
+
+          <div className={styles.checkboxField}>
+            <label className={styles.checkboxLabel}>
+              <input
+                type="checkbox"
+                checked={data.aceiteRegulamento}
+                onChange={(ev) => setField("aceiteRegulamento", ev.target.checked)}
+                onBlur={() => markTouched("aceiteRegulamento")}
+              />
+              <span>
+                Eu li e estou de acordo com os{" "}
+                <a className={styles.link} href="/regulamento">
+                  TERMOS DE REGULAMENTO DE SORTEIO
+                </a>
+                .
+              </span>
+              <span className={styles.req}>*</span>
+            </label>
+            {touched.aceiteRegulamento && errorsStep5.aceiteRegulamento && (
+              <p className={styles.error}>{errorsStep5.aceiteRegulamento}</p>
+            )}
           </div>
         </section>
       )}
@@ -409,12 +541,12 @@ export function FormVillaNPS() {
           Voltar
         </button>
 
-        {step < 3 ? (
+        {step < 5 ? (
           <button
             type="button"
             className={`${styles.btn} ${styles.btnPrimary}`}
             onClick={next}
-            disabled={(step === 1 && !canGoNextStep1) || (step === 2 && !canGoNextStep2) || submitting}
+            disabled={submitting}
           >
             Próximo
           </button>
@@ -422,7 +554,7 @@ export function FormVillaNPS() {
           <button
             type="submit"
             className={`${styles.btn} ${styles.btnPrimary}`}
-            disabled={!canSubmit || submitting}
+            disabled={Object.keys(errorsStep5).length > 0 || submitting}
           >
             {submitting ? "Enviando..." : "Enviar"}
           </button>

@@ -210,6 +210,35 @@
   margin-top: 2px;
 }
 
+.checkboxField {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 13px;
+  color: #111827;
+  line-height: 1.45;
+}
+
+.checkboxLabel input {
+  margin-top: 2px;
+  accent-color: #5bc5f2;
+}
+
+.link {
+  color: #111827;
+  text-decoration: underline;
+}
+
+.link:hover {
+  color: #5bc5f2;
+}
+
 .btn {
   border: 1px solid transparent;
   border-radius: 12px;

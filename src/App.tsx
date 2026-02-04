@@ -1,50 +1,58 @@
-import './styles/theme.css';
-import './styles/global.css';
-import { useEffect, useState } from 'react';
-import { Header } from './components/Header';
-import { SectionForm } from './components/SectionForm';
-import { InfoVilla } from './components/InfoVIlla';
-import { GalleryVilla } from './components/GalleryVilla';
-import { Faq } from './components/Faq';
-import { Loader } from './components/Loader';
-import { Footer } from './components/Footer';
+import './styles/theme.css'
+import './styles/global.css'
+import { useEffect, useState } from 'react'
+import { Routes, Route, useLocation } from 'react-router-dom'
+import { Header } from './components/Header'
+import { Loader } from './components/Loader'
+import { Footer } from './components/Footer'
+import { Home } from './pages/HomeRoute'
+import { RegulamentoRoute } from './pages/RegulamentoRoute'
+
+import { NotFoundError } from './pages/NotFoundRoute'
+import { LgpdRoute } from './pages/LgpdRoute'
 
 function App() {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true)
+  const location = useLocation()
 
   useEffect(() => {
-    let done = false;
+    let done = false
 
     const finish = () => {
-      if (done) return;
-      done = true;
-      setLoading(false);
-    };
-
-    if (document.readyState === 'complete') {    
-      const t = window.setTimeout(finish, 150);
-      return () => window.clearTimeout(t);
+      if (done) return
+      done = true
+      setLoading(false)
     }
 
-    window.addEventListener('load', finish, { once: true });
+    if (document.readyState === 'complete') {
+      const t = window.setTimeout(finish, 150)
+      return () => window.clearTimeout(t)
+    }
 
-    // fallback: evita prender o loader caso algum recurso demore/erro
-    const fallback = window.setTimeout(finish, 2000);
+    window.addEventListener('load', finish, { once: true })
+
+    const fallback = window.setTimeout(finish, 2000)
 
     return () => {
-      window.removeEventListener('load', finish);
-      window.clearTimeout(fallback);
-    };
-  }, []);
+      window.removeEventListener('load', finish)
+      window.clearTimeout(fallback)
+    }
+  }, [])
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
+  }, [location.pathname])
 
   return (
     <>
       {loading && <Loader />}
       <Header />
-      <SectionForm />
-      <InfoVilla />
-      <GalleryVilla />
-      <Faq />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/regulamento" element={<RegulamentoRoute />} />
+        <Route path="/lgpd" element={<LgpdRoute />} />        
+        <Route path="*" element={<NotFoundError />} />
+      </Routes>
       <Footer />
     </>
   )

@@ -1,218 +1,249 @@
 import styles from "./styles.module.css";
 
 export function Regulamento() {
-  const email = "reserva@grupovillahoteis.com.br";
-
   return (
-    <section className={styles.sectionGallery}>
+    <section className={styles.section}>
       <div className={styles.container}>
-        {/* Header */}
-        <div className={styles.header}>
-          <div className={styles.headerLeft}>
-            <h2 className={styles.title}>Regulamento</h2>
-            <p className={styles.subtitle}>Regulamento da campanha</p>
-            <div className={styles.line} />
-          </div>
+        <header className={styles.header}>
+          <h2 className={styles.title}>TERMO DE REGULAMENTO DE SORTEIO</h2>
+          <p className={styles.subtitle}>
+            “PARTICIPE DA PESQUISA E PARTICIPE DO SORTEIO”
+          </p>
+        </header>
+
+        <div className={styles.block}>
+          <p className={styles.text}>
+            Ajude-nos a melhorar nossos serviços respondendo a pesquisa de
+            satisfação, e participe do sorteio de diárias na Vila do Comendador!
+          </p>
         </div>
 
-        <p className={styles.intro}>
-          <strong>POLÍTICA DE HOSPEDAGEM, ALTERAÇÃO E CANCELAMENTO</strong>
-          <br />
-          Todas as solicitações referentes a reservas, alterações, cancelamentos e demais informações devem
-          ser enviadas exclusivamente para o e-mail:{" "}
-          <a className={styles.link} href={`mailto:${email}`}>
-            {email}
-          </a>
-          .
-        </p>
+        <div className={styles.block}>
+          <h3 className={styles.h3}>1. DA PROMOÇÃO</h3>
+          <p className={styles.text}>
+            O presente regulamento estabelece as condições para participação no
+            sorteio promocional promovido pela QUADRAIMOB SOLUÇÕES IMOBILIÁRIAS
+            LTDA, CNPJ/MF, empresa com sede no SCN, Quadra 05, Bloco A, Sala
+            817, Brasília Shopping – Torre Norte, Brasília-DF, inscrita no
+            CNPJ/MF sob nº 32.079.446/0001-40, neste ato representada por seus
+            sócios diretores Leonel Alves da Silva Netto e Rogerio de Oliveira
+            Silva, doravante designada simplesmente IMOBILIÁRIA, a qual sorteará
+            dentre os clientes adquirentes de imóveis comercializados por essa,
+            que tenham preenchido a pesquisa de satisfação, durante o período de
+            participação descrito nesse termo, e cumprimento de todos os
+            requisitos deste, conforme regras abaixo descritas.
+          </p>
+        </div>
 
-        <div className={styles.faq}>
-          <details className={styles.item}>
-            <summary className={styles.question}>I – Alteração de data</summary>
-            <div className={styles.answer}>
-              <p>
-                A alteração de data deverá ser solicitada exclusivamente por e-mail ({" "}
-                <a className={styles.link} href={`mailto:${email}`}>
-                  {email}
-                </a>
-                ).
-              </p>
-              <p>
-                Para reservas alteradas, em caso de cancelamento, serão aplicadas as mesmas regras do item II
-                (Cancelamento), considerando a nova data reservada.
-              </p>
-            </div>
-          </details>
+        <div className={styles.block}>
+          <h3 className={styles.h3}>2. DO OBJETO</h3>
+          <p className={styles.text}>
+            Constitui objeto do presente sorteio, 02 (duas) diárias para casal,
+            a ser usufruída exclusivamente pelo(a) sorteado(a) e acompanhante,
+            em baixa temporada, na modalidade (Suíte Confort Standard), na Villa
+            do Comendador”, localizada no município de Pirenópolis/GO, conforme
+            site para simples visualização:
+            https://villadocomendador.com.br/suíte-conforto-standard/.
+          </p>
+        </div>
 
-          <details className={styles.item}>
-            <summary className={styles.question}>II – Cancelamento</summary>
-            <div className={styles.answer}>
-              <p>
-                As solicitações de cancelamento devem ser realizadas exclusivamente por e-mail ({" "}
-                <a className={styles.link} href={`mailto:${email}`}>
-                  {email}
-                </a>
-                ).
-              </p>
-              <p>
-                Será adotada a seguinte política, conforme o número de dias anteriores à data prevista para o
-                check-in:
-              </p>
+        <div className={styles.block}>
+          <h3 className={styles.h3}>3. DO PERÍODO DE PARTICIPAÇÃO</h3>
+          <p className={styles.text}>
+            Participarão do sorteio todos os clientes que adquirirem os seus
+            imóveis no período compreendido entre o dia 01 de janeiro a 31 de
+            março, inclusive, não admitindo prorrogação do prazo, e desde que
+            tenham preenchido a pesquisa de satisfação.
+          </p>
+        </div>
 
+        <div className={styles.block}>
+          <h3 className={styles.h3}>4. DOS REQUISITOS DE PARTICIPAÇÃO</h3>
+
+          <p className={styles.text}>
+            4.1. Poderão participar do sorteio somente clientes que tenham
+            efetivamente concluído o contrato de compra e venda (assinatura
+            reconhecida/autenticada ou certificada) no período indicado no item
+            3 acima, e que tenham preenchido a pesquisa de satisfação.
+          </p>
+
+          <p className={styles.text}>
+            4.2. A participação é restrita ao responsável pela compra, não sendo
+            permitida a inscrição de terceiros, tampouco mediante procuração.
+          </p>
+
+          <p className={styles.text}>
+            4.3. Cada cliente poderá participar apenas uma única vez por unidade
+            compradora, independentemente da quantidade de imóveis adquiridos
+            nesse período com a Imobiliária.
+          </p>
+
+          <p className={styles.text}>
+            4.4. A hospedagem objeto do sorteio é concedida a título de brinde
+            (mediante sorteio), exclusivamente para os clientes compradores que
+            responderem à pesquisa de satisfação de compra do imóvel, e somente
+            após o envio do formulário totalmente preenchido, será
+            disponibilizado e encaminhado pela IMOBILIÁRIA um link para
+            participação do sorteio com o respectivo Termo de Regulamento e o
+            qual deverá ser lido previamente e aceito todas as regras para
+            participação.
+          </p>
+        </div>
+
+        <div className={styles.block}>
+          <h3 className={styles.h3}>5. DA FORMA DE PARTICIPAÇÃO</h3>
+
+          <p className={styles.text}>
+            5.1. Estarão automaticamente aptos ao sorteio os clientes que:
+          </p>
+
+          <ol className={styles.listAlpha}>
+            <li>
+              Tenham realizado a compra do imóvel entre 01 de janeiro e 31 de
+              março de 2026 (inclusive);
+            </li>
+            <li>
+              Sejam identificados como os responsáveis pela compra do imóvel;
+            </li>
+            <li>
+              Respondam à pesquisa de satisfação disponibilizada após a
+              conclusão da compra do imóvel, dentro do prazo informado no item
+              acima.
+            </li>
+            <li>Estejam com os dados atualizados;</li>
+          </ol>
+
+          <p className={styles.text}>
+            5.2. Não será permitida a participação de pessoas que não se
+            enquadrem nas condições acima.
+          </p>
+        </div>
+
+        <div className={styles.block}>
+          <h3 className={styles.h3}>6. DA APURAÇÃO E DO SORTEIO</h3>
+          <p className={styles.text}>
+            6.1. A apuração do sorteio ocorrerá no dia 01 de abril de 2026.
+          </p>
+          <p className={styles.text}>
+            6.2. O sorteio será realizado de forma online, por meio do perfil
+            oficial da QUADRAIMOB SOLUÇÕES IMOBILIÁRIAS LTDA., na rede social
+            Instagram, garantindo transparência e publicidade ao ato e
+            posteriormente comunicado ao cliente.
+          </p>
+        </div>
+
+        <div className={styles.block}>
+          <h3 className={styles.h3}>7. DO PRÊMIO</h3>
+          <p className={styles.text}>
+            7.1 O prêmio consistirá em 01 (uma) hospedagem, conforme as
+            seguintes condições:
+          </p>
+          <ul className={styles.list}>
+            <li>02 (duas) diárias para casal;</li>
+            <li>
+              Utilização válida exclusivamente em período de baixa temporada;
+            </li>
+            <li>
+              Hospedagem em Suíte Conforto Standard – Luxury Villa, contendo:
               <ul className={styles.list}>
-                <li>
-                  Cancelamento com até 30 (trinta) dias antes da data de entrada: 100% em carta de crédito para
-                  agendamento em data futura ou devolução integral.
-                </li>
-                <li>
-                  Cancelamento com até 15 (quinze) dias antes da data de entrada: multa de 15% (quinze por
-                  cento) do valor depositado.
-                </li>
-                <li>
-                  Cancelamento com até 7 (sete) dias antes da data de entrada: multa de 25% (vinte e cinco por
-                  cento) do valor depositado.
-                </li>
-                <li>
-                  Cancelamento com até 3 (três) dias antes da data de entrada: multa de 50% (cinquenta por
-                  cento) do valor depositado.
-                </li>
-                <li>
-                  Cancelamento com menos de 3 (três) dias antes da data de entrada: multa de 100% (cem por
-                  cento) do valor depositado.
-                </li>
+                <li>Cama King</li>
+                <li>TV LED HD </li>
+                <li>Sky e TV Satélite </li>
+                <li>Ar-condicionado Split </li>
+                <li>Frigobar </li>
+                <li>Cofre digital </li>
+                <li>Secador de cabelo </li>
+                <li>Enxovais especiais </li>
+                <li>Amenities especiais </li>
               </ul>
+            </li>
+          </ul>
+          <p className={styles.text}>
+            7.2 O prêmio é pessoal e intransferível, não podendo ser convertido
+            em dinheiro, trocado ou substituído por outro benefício, a ser
+            usufruído mediante reserva prévia e condições de disponibilidade do
+            estabelecimento.
+          </p>
+        </div>
 
-              <p>
-                <strong>Desistência após o check-in ou saída antecipada:</strong> será cobrado o valor total do
-                pacote contratado, sem direito a restituição.
-              </p>
-              <p>
-                <strong>Desistência sem cancelamento (no show):</strong> retenção de 100% (cem por cento) do
-                valor pago.
-              </p>
-            </div>
-          </details>
+        <div className={styles.block}>
+          <h3 className={styles.h3}>8. DA FORMA E DATA DE REALIZAÇÃO</h3>
+          <p className={styles.text}>
+            8.1. O sorteio será realizado de forma online, no dia 01/04/2026,
+            por meio do perfil oficial da QUADRAIMOB SOLUÇÕES IMOBILIÁRIAS
+            LTDA., na rede social Instagram, na data prevista neste regulamento.
+          </p>
+          <p className={styles.text}>
+            8.2. Para fins de apuração, serão considerados todos os
+            participantes que atendam integralmente aos critérios estabelecidos
+            neste regulamento, sendo o contemplado escolhido de maneira
+            aleatória, dentre os participantes válidos.
+          </p>
 
-          <details className={styles.item}>
-            <summary className={styles.question}>III – Outras solicitações</summary>
-            <div className={styles.answer}>
-              <p>
-                Qualquer solicitação relacionada à reserva, pagamento ou hospedagem deverá ser realizada
-                exclusivamente por e-mail:{" "}
-                <a className={styles.link} href={`mailto:${email}`}>
-                  {email}
-                </a>
-                .
-              </p>
-              <p>
-                Todas as ligações realizadas para a nossa Central de Reservas nos números (+55 62) 3142-5866 /
-                3142-7100 são gravadas para fins de segurança, controle de qualidade e aprimoramento do
-                atendimento.
-              </p>
-            </div>
-          </details>
+          <p className={styles.text}>
+            8.3. A realização do sorteio poderá ser transmitida ao vivo (live)
+            ou registrada por meio de vídeo, a exclusivo critério da QUADRAIMOB
+            SOLUÇÕES IMOBILIÁRIAS LTDA garantindo transparência e publicidade ao
+            procedimento e divulgação do resultado.
+          </p>
+          <p className={styles.text}>
+            8.4. O resultado será divulgado no próprio perfil do Instagram onde
+            o sorteio foi realizado, com a identificação do participante
+            contemplado, mediante e-mail ou WhatsApp.
+          </p>
+        </div>
 
-          <details className={styles.item}>
-            <summary className={styles.question}>IV – Condições de pagamento (Cartão de Crédito)</summary>
-            <div className={styles.answer}>
-              <p>
-                O pagamento efetuado via cartão de crédito deverá ser realizado pelo titular da reserva online,
-                sendo indispensável a apresentação dos documentos de identificação no momento do check-in.
-              </p>
-              <p>
-                <strong>
-                  1.1 Caso o cartão utilizado não seja do titular da reserva, será obrigatório o envio da
-                  autorização de débito assinada
-                </strong>
-                , junto com cópias do RG e CPF do titular, no prazo de até 48 horas após a efetivação da
-                reserva.
-              </p>
-              <p>O não envio da documentação implicará na cobrança no momento do check-in.</p>
-              <p>
-                (Solicitações e envios de documentação deverão ser feitos exclusivamente por e-mail:{" "}
-                <a className={styles.link} href={`mailto:${email}`}>
-                  {email}
-                </a>
-                .)
-              </p>
-            </div>
-          </details>
+        <div className={styles.block}>
+          <h3 className={styles.h3}>9. DA DIVULGAÇÃO DO RESULTADO</h3>
+          <p className={styles.text}>
+            9.1. O resultado do sorteio será divulgado no mesmo perfil do
+            Instagram em que ocorrerá a apuração.
+          </p>
+          <p className={styles.text}>
+            9.2. O ganhador será contatado pelos meios informados no momento da
+            compra, por isso, fundamental manter os dados atualizados.
+          </p>
+        </div>
 
-          <details className={styles.item}>
-            <summary className={styles.question}>V – Hospedagem de menores de 18 anos</summary>
-            <div className={styles.answer}>
-              <p>
-                De acordo com os arts. 82 e 250 do Estatuto da Criança e do Adolescente (Lei nº 8.069/1990,
-                com redação dada pela Lei nº 12.038/2009), é proibida a hospedagem de crianças ou adolescentes
-                desacompanhados dos pais ou responsável legal.
-              </p>
-              <p>
-                Será obrigatória a apresentação de autorização por escrito, autenticada em cartório, além dos
-                documentos da criança ou adolescente, no momento do check-in.
-              </p>
-              <p>
-                (Solicitações relacionadas deverão ser feitas exclusivamente por e-mail:{" "}
-                <a className={styles.link} href={`mailto:${email}`}>
-                  {email}
-                </a>
-                .)
-              </p>
-            </div>
-          </details>
+        <div className={styles.block}>
+          <h3 className={styles.h3}>10. DA ENTREGA E UTILIZAÇÃO DO PRÊMIO</h3>
+          <p className={styles.text}>
+            10.1. As condições para agendamento e utilização da hospedagem serão
+            informadas diretamente ao ganhador
+          </p>
+          <p className={styles.text}>
+            10.2. Eventuais despesas não expressamente incluídas no prêmio serão
+            de responsabilidade exclusiva do contemplado.
+          </p>
+        </div>
 
-          <details className={styles.item}>
-            <summary className={styles.question}>VI – Horários</summary>
-            <div className={styles.answer}>
-              <p>
-                <strong>Check-in:</strong> 15h
-                <br />
-                <strong>Check-out:</strong> 12h
-              </p>
-              <p>
-                Em conformidade com a nova regulamentação que estabelece que a diária deve ter duração de 24
-                horas (com 3 horas destinadas à arrumação), informamos que o acesso às áreas de lazer é
-                permitido a partir das 12h, enquanto o hóspede aguarda a liberação da acomodação, prevista
-                para as 15h.
-              </p>
-            </div>
-          </details>
+        <div className={styles.block}>
+          <h3 className={styles.h3}>11. DAS DISPOSIÇÕES GERAIS</h3>
+          <p className={styles.text}>
+            11.1. A participação neste sorteio implica na aceitação total e
+            irrestrita deste regulamento.
+          </p>
+          <p className={styles.text}>
+            11.2. A QUADRAIMOB SOLUÇÕES IMOBILIÁRIAS LTDA reserva-se o direito
+            de desclassificar participantes que não atendam às regras
+            estabelecidas ou que pratiquem qualquer ato considerado irregular ou
+            fraudulento.
+          </p>
+          <p className={styles.text}>
+            11.3. Este sorteio possui caráter exclusivamente promocional, não
+            estando vinculado a pagamento adicional, sorte ou competição.
+          </p>
 
-          <details className={styles.item}>
-            <summary className={styles.question}>VII – Alimentos, bebidas e serviços terceirizados</summary>
-            <div className={styles.answer}>
-              <p>
-                O setor de gastronomia e spa são terceirizados, e suas políticas de reservas, cardápios e
-                eventos são de responsabilidade exclusiva dos parceiros.
-              </p>
-              <p>
-                Para garantir a segurança alimentar e a preservação ambiental, não é permitido trazer
-                alimentos ou bebidas sem autorização prévia. O descumprimento poderá resultar em multa ou
-                proibição do uso e consumo nas dependências.
-              </p>
-              <p>
-                Todas as solicitações referentes a reservas, alterações, cancelamentos e demais informações
-                devem ser enviadas exclusivamente para o e-mail:{" "}
-                <a className={styles.link} href={`mailto:${email}`}>
-                  {email}
-                </a>
-                .
-              </p>
-            </div>
-          </details>
+          <p className={styles.text}>
+            11.4. Fica eleito o Foro da sede da IMOBILIÁRIA para dirimir
+            quaisquer dúvidas resultantes deste Termo.
+          </p>
 
-          <details className={styles.item}>
-            <summary className={styles.question}>VIII – Animais de estimação / Pet</summary>
-            <div className={styles.answer}>
-              <p>A pousada adota uma política institucional de não hospedagem de animais.</p>
-              <p>
-                Mais informações (animais de estimação / pet):{" "}
-                <a className={styles.link} href={`mailto:${email}`}>
-                  {email}
-                </a>
-                .
-              </p>
-            </div>
-          </details>
+          <p className={styles.text}>
+            E, por estarem assim, justas e concordes, as partes assinam o
+            presente Termo de Regulamento em 02 (duas) vias de igual teor e
+            forma, para que produzam os devidos e desejados efeitos.
+          </p>
         </div>
       </div>
     </section>

@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import styles from "./styles.module.css";
 
 export function Header() {
@@ -6,7 +7,9 @@ export function Header() {
     <header className={styles.header}>
       <div className={styles.inner}>
         <div className={styles.logo}>
-          <img src="/quadraimob.svg" alt="quadraimob Logo" />
+          <Link to="/">
+            <img src="/quadraimob.svg" alt="quadraimob Logo" />
+          </Link>
         </div>
 
         <div className={styles.logovilla}>

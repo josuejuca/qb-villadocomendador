@@ -28,6 +28,7 @@ type FormData = {
 
   nps: number | null;
   justificativa: string;
+  aceiteRegulamento: boolean;
 };
 
 const SATISFACAO_BASE: Satisfacao[] = [
@@ -96,6 +97,7 @@ export function FormVillaNPS() {
 
     nps: null,
     justificativa: "",
+    aceiteRegulamento: false,
   });
 
   const [touched, setTouched] = useState<Record<string, boolean>>({});
@@ -128,6 +130,8 @@ export function FormVillaNPS() {
       e.telefone = "Telefone inválido (use DDD + 9 dígitos).";
     if (!data.imovelUnidade.trim())
       e.imovelUnidade = "Informe qual imóvel e unidade você comprou.";
+    if (!data.aceiteRegulamento)
+      e.aceiteRegulamento = "Você precisa aceitar o regulamento da campanha.";
     return e;
   }, [data]);
 
@@ -157,9 +161,13 @@ export function FormVillaNPS() {
 
   function next() {
     if (step === 1) {
-      (["nome", "email", "telefone", "imovelUnidade"] as (keyof FormData)[]).forEach(
-        markTouched
-      );
+      ([
+        "nome",
+        "email",
+        "telefone",
+        "imovelUnidade",
+        "aceiteRegulamento",
+      ] as (keyof FormData)[]).forEach(markTouched);
       if (Object.keys(errorsStep1).length > 0) return;
       setStep(2);
       return;
@@ -243,6 +251,7 @@ export function FormVillaNPS() {
         processoCompra: "",
         nps: null,
         justificativa: "",
+        aceiteRegulamento: false,
       });
     } catch (err) {
       if (axios.isAxiosError(err)) {
@@ -354,6 +363,28 @@ export function FormVillaNPS() {
             />
             {touched.imovelUnidade && errorsStep1.imovelUnidade && (
               <p className={styles.error}>{errorsStep1.imovelUnidade}</p>
+            )}
+          </div>
+
+          <div className={styles.checkboxField}>
+            <label className={styles.checkboxLabel}>
+              <input
+                type="checkbox"
+                checked={data.aceiteRegulamento}
+                onChange={(ev) => setField("aceiteRegulamento", ev.target.checked)}
+                onBlur={() => markTouched("aceiteRegulamento")}
+              />
+              <span>
+                Eu li e estou de acordo com os{" "}
+                <a className={styles.link} href="/regulamento">
+                  TERMOS DE REGULAMENTO DE SORTEIO
+                </a>
+                .
+              </span>
+              <span className={styles.req}>*</span>
+            </label>
+            {touched.aceiteRegulamento && errorsStep1.aceiteRegulamento && (
+              <p className={styles.error}>{errorsStep1.aceiteRegulamento}</p>
             )}
           </div>
         </section>
@@ -501,6 +532,7 @@ export function FormVillaNPS() {
               rows={4}
             />
           </div>
+
         </section>
       )}
 

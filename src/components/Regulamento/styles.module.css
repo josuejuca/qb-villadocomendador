@@ -47,6 +47,14 @@
   margin: 10px 0 0;
 }
 
+.textDate {
+  text-align: end;
+  font-size: 10px;
+  line-height: 1.8;
+  color: #555252;
+  margin: 10px 0 0;
+}
+
 .list {
   margin-top: 10px;
   padding-left: 20px;
